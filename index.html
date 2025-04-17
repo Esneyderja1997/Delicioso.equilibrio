@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delicioso Equilibrio </title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Delicioso Equilibrio</h1>
+        <a href="login.html" style="position:absolute; top:20px; right:30px; background:#bdecb6; color:white; padding:8px 18px; border-radius:6px; text-decoration:none; font-weight:600;">Inicio de sesión</a>
+    </header>
+    <div style="background:#fffbe6; color:#8a6d3b; text-align:center; padding:10px 0; font-size:1.1em; border-bottom:1px solid #ffe58f;">
+        <b>Los pedidos se deben realizar con dos días de anticipación.</b>
+    </div>
+    <main>
+        <section class="carousel-container-with-sides">
+            <div class="side-image left">
+                <img src="images/lateral1.jpg" alt="Decoración Izquierda">
+            </div>
+            <section class="carousel-container">
+                <button class="carousel-btn prev" aria-label="Anterior">&#10094;</button>
+                <div class="carousel">
+                    <img src="images/postre1.jpg" alt="Postre 1" class="carousel-img active">
+                    <img src="images/postre2.jpg" alt="Postre 2" class="carousel-img">
+                    <img src="images/postre3.jpg" alt="Postre 3" class="carousel-img">
+                    <img src="images/postre4.jpg" alt="Postre 4" class="carousel-img">
+                    <img src="images/postre5.jpg" alt="Postre 5" class="carousel-img">
+                    <img src="images/postre6.jpg" alt="Postre 6" class="carousel-img">
+                    <img src="images/postre7.jpg" alt="Postre 7" class="carousel-img">
+                </div>
+                <button class="carousel-btn next" aria-label="Siguiente">&#10095;</button>
+            </section>
+            <div class="side-image right">
+                <img src="images/lateral2.jpg" alt="Decoración Derecha">
+            </div>
+        </section>
+        <div style="text-align:center; margin: 30px 0;">
+            <a href="productos.html" class="btn-productos" style="padding: 15px 30px; background:#27ae60; color:white; font-size:1.2em; border:none; border-radius:8px; text-decoration:none; transition: background 0.3s;">Ver Productos y Pedir</a>
+        </div>
+    </main>
+    <a href="https://wa.me/573017918873" class="whatsapp-float" target="_blank" title="¡Contáctanos por WhatsApp!">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+    </a>
+    <a href="https://www.instagram.com/delicioso.equilibrio?igsh=MW9scjBwc21lMnA1dg==" class="instagram-float" target="_blank" title="¡Síguenos en Instagram!">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" />
+    </a>
+    <script>
+        const images = document.querySelectorAll('.carousel-img');
+        const prevBtn = document.querySelector('.carousel-btn.prev');
+        const nextBtn = document.querySelector('.carousel-btn.next');
+        let current = 0;
+
+        function showImage(index) {
+            images.forEach((img, i) => {
+                img.classList.toggle('active', i === index);
+            });
+        }
+
+        prevBtn.addEventListener('click', () => {
+            current = (current - 1 + images.length) % images.length;
+            showImage(current);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            current = (current + 1) % images.length;
+            showImage(current);
+        });
+
+        // Opcional: cambiar automáticamente cada 4 segundos
+        setInterval(() => {
+            current = (current + 1) % images.length;
+            showImage(current);
+        }, 4000);
+    </script>
+</body>
+</html>

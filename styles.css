@@ -1,0 +1,194 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #fff8f0;
+    color: #333;
+}
+
+header {
+    background: #fadbd8;
+    color: #0f0e0e;
+    padding: 2rem 0 1rem 0;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+}
+
+.carousel-container-with-sides {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 2rem auto;
+    max-width: 1100px;
+}
+
+.side-image {
+    width: 120px;
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.side-image img {
+    width: 180px;
+    height: 600px;
+    object-fit: cover;
+    border-radius: 32px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+    background: #ffe;
+}
+
+@media (max-width: 900px) {
+    .carousel-container-with-sides {
+        gap: 0.5rem;
+    }
+    .side-image img {
+        width: 60px;
+        height: 180px;
+    }
+}
+
+@media (max-width: 700px) {
+    .carousel-container-with-sides {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .side-image {
+        width: 100%;
+        justify-content: center;
+    }
+    .side-image img {
+        width: 80vw;
+        height: 80px;
+        margin: 0 auto;
+    }
+}
+
+.carousel-container {
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    padding: 1.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.carousel-img {
+    display: none;
+    width: 700px;
+    height: 450px;
+    max-width: 90vw;
+    max-height: 65vh;
+    object-fit: contain;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.09);
+    transition: opacity 0.5s, transform 0.3s;
+    opacity: 0;
+    margin: 0 auto;
+}
+
+.carousel-img.active {
+    display: block;
+    opacity: 1;
+    transform: scale(1.04);
+}
+
+.carousel-btn {
+    background: #f06292;
+    border: none;
+    color: #fff;
+    font-size: 2.2rem;
+    padding: 0.3em 0.7em;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    transition: background 0.2s;
+}
+
+.carousel-btn.prev {
+    left: 15px;
+}
+
+.carousel-btn.next {
+    right: 15px;
+}
+
+.carousel-btn:hover {
+    background: #ffa500;
+}
+
+
+.whatsapp-float {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+    background: #25d366;
+    padding: 12px;
+    border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.whatsapp-float:hover {
+    background: #128c7e;
+}
+
+.whatsapp-float img {
+    width: 36px;
+    height: 36px;
+    display: block;
+}
+
+.instagram-float {
+    position: fixed;
+    bottom: 24px;
+    right: 100px;
+    z-index: 100;
+    background: #e1306c;
+    padding: 12px;
+    border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.instagram-float:hover {
+    background: #c13584;
+}
+
+.instagram-float img {
+    width: 36px;
+    height: 36px;
+    display: block;
+}

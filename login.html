@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Administración</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .login-container { max-width: 350px; margin: 60px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 30px; }
+        .login-container h2 { text-align: center; margin-bottom: 25px; }
+        .login-container label { display:block; margin-bottom:6px; }
+        .login-container input { width:100%; padding:8px; margin-bottom:15px; border-radius:5px; border:1px solid #ccc; }
+        .login-btn { width:100%; background:#27ae60; color:white; border:none; padding:12px; border-radius:6px; font-size:1em; cursor:pointer; }
+        .login-btn:hover { background:#219150; }
+        .recuperar-link { display:block; text-align:right; margin-bottom:10px; font-size:0.95em; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Iniciar Sesión</h2>
+        <form id="loginForm">
+            <label for="user">Usuario:</label>
+            <input type="text" id="user" name="user" required>
+            <label for="pass">Contraseña:</label>
+            <input type="password" id="pass" name="pass" required>
+            <button type="submit" class="login-btn">Iniciar sesión</button>
+            <a href="#" class="recuperar-link" id="recuperar">¿Olvidaste tu contraseña?</a>
+        </form>
+        <div id="loginMsg" style="color:red; text-align:center;"></div>
+    </div>
+    <script>
+        // Adaptar login para múltiples usuarios administradores
+        if(!localStorage.getItem('admins')) {
+            localStorage.setItem('admins', JSON.stringify([
+                {user: 'Admin', pass: 'Admin', nombre: 'Propietario', telefono: '', correo: ''}
+            ]));
+        }
+        const form = document.getElementById('loginForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const admins = JSON.parse(localStorage.getItem('admins'));
+            const user = form.user.value;
+            const pass = form.pass.value;
+            const found = admins.find(a => a.user === user && a.pass === pass);
+            if(found) {
+                sessionStorage.setItem('adminLogged', '1');
+                sessionStorage.setItem('adminUser', found.user);
+                window.location.href = 'admin.html';
+            } else {
+                document.getElementById('loginMsg').textContent = 'Usuario o contraseña incorrectos';
+            }
+        });
+        document.getElementById('recuperar').onclick = function(e) {
+            e.preventDefault();
+            const admins = JSON.parse(localStorage.getItem('admins'));
+            const user = form.user.value;
+            const found = admins.find(a => a.user === user);
+            if(found && found.correo) {
+                alert('Para recuperar tu contraseña, contacta a: ' + found.correo);
+            } else {
+                alert('No hay correo registrado para recuperación o el usuario no existe. Actualízalo en la administración.');
+            }
+        };
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos - Delicioso Equilibrio</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        .productos-container { max-width: 600px; margin: 40px auto; padding: 30px; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .productos-container h2 { text-align: center; margin-bottom: 25px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f8f8f8; }
+        .pedido-btn { background: #27ae60; color: white; border: none; padding: 12px 25px; border-radius: 6px; font-size: 1em; cursor: pointer; transition: background 0.3s; }
+        .pedido-btn:hover { background: #219150; }
+        .cantidad-input { width: 50px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="productos-container">
+        <div style="background:#fffbe6; color:#8a6d3b; text-align:center; padding:10px 0; font-size:1.05em; border-bottom:1px solid #ffe58f; margin-bottom:18px;">
+            <b>Los pedidos se deben realizar con dos días de anticipación.<br>Si el producto seleccionado está para entrega inmediata le estaremos escribiendo al número registrado.</b>
+        </div>
+        <h2>Lista de Productos</h2>
+        <form id="pedidoForm">
+            <div style="margin-bottom: 15px;">
+                <label for="nombre" style="display:block; margin-bottom:5px;">Nombre completo:</label>
+                <input type="text" id="nombre" name="nombre" required style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label for="telefono" style="display:block; margin-bottom:5px;">Número de teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" pattern="[0-9]{10,}" required style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label for="direccion" style="display:block; margin-bottom:5px;">Dirección de entrega:</label>
+                <input type="text" id="direccion" name="direccion" required style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc;">
+            </div>
+            <div style="margin-bottom: 15px; background: #f6f6f6; padding: 12px 10px; border-radius: 7px; border: 1px solid #e0e0e0;">
+                <input type="checkbox" id="domicilio" name="domicilio" style="transform:scale(1.2); margin-right:8px;">
+                <label for="domicilio" style="font-weight:600;">Solicitar pedido a domicilio <span style="color:#27ae60;">(+ $8.000, gratis por compras desde $100.000)</span></label>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Tamaño y Precio</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Postre de Maracuyá</td>
+<td>
+    <select name="maracuya_tamano" class="tamano-select">
+        <option value="Mini" data-precio="12000">Mini $12.000</option>
+        <option value="Pequeño" data-precio="25000">Pequeño $25.000</option>
+        <option value="Mediano" data-precio="38000">Mediano $38.000</option>
+        <option value="Grande" data-precio="75000">Grande $75.000</option>
+    </select>
+</td>
+<td><input class="cantidad-input" type="number" min="0" max="20" value="0" name="maracuya_cantidad"></td>
+                    </tr>
+                    <tr>
+                        <td>Cheesecake de Fresa</td>
+<td>
+    <select name="cheesecake_tamano" class="tamano-select">
+        <option value="Mini" data-precio="12000">Mini $12.000</option>
+        <option value="Pequeño" data-precio="25000">Pequeño $25.000</option>
+        <option value="Mediano" data-precio="38000">Mediano $38.000</option>
+        <option value="Grande" data-precio="75000">Grande $75.000</option>
+    </select>
+</td>
+<td><input class="cantidad-input" type="number" min="0" max="20" value="0" name="cheesecake_cantidad"></td>
+                    </tr>
+                    <tr>
+                        <td>Torta de Chocolate</td>
+<td>
+    <select name="chocolate_tamano" class="tamano-select">
+        <option value="Mini" data-precio="12000">Mini $12.000</option>
+        <option value="Pequeño" data-precio="25000">Pequeño $25.000</option>
+        <option value="Mediano" data-precio="38000">Mediano $38.000</option>
+        <option value="Grande" data-precio="75000">Grande $75.000</option>
+    </select>
+</td>
+<td><input class="cantidad-input" type="number" min="0" max="20" value="0" name="chocolate_cantidad"></td>
+                    </tr>
+                    <tr>
+                        <td>Pie de Limón</td>
+<td>
+    <select name="pie_tamano" class="tamano-select">
+        <option value="Mini" data-precio="12000">Mini $12.000</option>
+        <option value="Pequeño" data-precio="25000">Pequeño $25.000</option>
+        <option value="Mediano" data-precio="38000">Mediano $38.000</option>
+        <option value="Grande" data-precio="75000">Grande $75.000</option>
+    </select>
+</td>
+<td><input class="cantidad-input" type="number" min="0" max="20" value="0" name="pie_cantidad"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit" class="pedido-btn">Realizar Pedido</button>
+        </form>
+        <div style="text-align:center; margin-top:20px;">
+            <a href="index.html">&larr; Volver al inicio</a>
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById('pedidoForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const productos = [
+    { nombre: 'Postre de Maracuyá', campo: 'maracuya' },
+    { nombre: 'Cheesecake de Fresa', campo: 'cheesecake' },
+    { nombre: 'Torta de Chocolate', campo: 'chocolate' },
+    { nombre: 'Pie de Limón', campo: 'pie' }
+];
+            // Obtener datos del cliente
+            const nombre = form.elements['nombre'].value.trim();
+            const telefono = form.elements['telefono'].value.trim();
+            const direccion = form.elements['direccion'].value.trim();
+            if (!nombre || !telefono || !direccion) {
+                alert('Por favor completa todos los datos del cliente.');
+                return;
+            }
+            let mensaje = `¡Hola! Quisiera hacer el siguiente pedido:%0A`;
+            mensaje += `Nombre: ${nombre}%0A`;
+            mensaje += `Teléfono: ${telefono}%0A`;
+            mensaje += `Dirección: ${direccion}%0A---%0A`;
+            let total = 0;
+            let detalleProductos = '';
+            productos.forEach(p => {
+    const cantidad = parseInt(form.elements[`${p.campo}_cantidad`].value);
+    const select = form.elements[`${p.campo}_tamano`];
+    const tamano = select.options[select.selectedIndex].value;
+    const precio = parseInt(select.options[select.selectedIndex].getAttribute('data-precio'));
+    if (cantidad > 0) {
+        detalleProductos += `- ${p.nombre} (${tamano}) x ${cantidad} ($${precio * cantidad})%0A`;
+        total += precio * cantidad;
+    }
+});
+            if (total === 0) {
+                alert('Por favor selecciona al menos un producto.');
+                return;
+            }
+            mensaje += `Productos:%0A${detalleProductos}`;
+
+            // Lógica del domicilio
+            const domicilio = form.elements['domicilio'].checked;
+            let totalFinal = total;
+            if (domicilio) {
+                if (total >= 100000) {
+                    mensaje += `%0ADomicilio: GRATIS (por compras desde $100.000)`;
+                } else {
+                    mensaje += `%0ADomicilio: $8.000`;
+                    totalFinal += 8000;
+                }
+            } else {
+                mensaje += `%0ADomicilio: No solicitado`;
+            }
+            mensaje += `%0A--------------------%0ATotal a pagar: $${totalFinal}`;
+
+            // Guardar pedido en localStorage
+            let pedidos = JSON.parse(localStorage.getItem('pedidos')||'[]');
+            pedidos.push({
+                nombre, telefono, direccion,
+                productos: detalleProductos,
+                domicilio: domicilio ? (total >= 100000 ? 'GRATIS' : '$8.000') : 'No solicitado',
+                total: totalFinal
+            });
+            localStorage.setItem('pedidos', JSON.stringify(pedidos));
+
+
+            // Mostrar mensaje de éxito y redirigir
+            alert('¡Pedido realizado con éxito! Pronto nos comunicaremos contigo para confirmar la entrega.');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

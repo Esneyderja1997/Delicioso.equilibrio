@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Pedidos</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .admin-container { max-width: 800px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 30px; }
+        .admin-container h2 { text-align: center; margin-bottom: 25px; }
+        .pedido-card { border:1px solid #e0e0e0; border-radius:7px; margin-bottom:18px; padding:15px; background:#fafafa; }
+        .pedido-card p { margin:4px 0; }
+        .pedido-actions { margin-top:10px; }
+        .pedido-actions button { margin-right:10px; padding:6px 14px; border:none; border-radius:5px; font-weight:600; cursor:pointer; }
+        .btn-entregado { background:#bdecb6; color:white; }
+        .btn-cancelar { background:#e74c3c; color:white; }
+        .admin-data { margin: 30px 0 20px 0; padding: 18px; background: #f6f6f6; border-radius: 7px; border: 1px solid #e0e0e0; }
+        .admin-data label { font-weight:600; }
+        .admin-data input { margin-bottom:10px; width:100%; padding:7px; border-radius:5px; border:1px solid #ccc; }
+        .cerrar-btn { float:right; background:#e67e22; color:white; border:none; padding:7px 18px; border-radius:6px; font-size:1em; cursor:pointer; }
+        .cerrar-btn:hover { background:#d35400; }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <button class="cerrar-btn" onclick="logout()">Cerrar sesión</button>
+        <button id="configBtn" style="display:none; position:absolute; top:25px; right:90px; background:none; border:none; cursor:pointer;">
+            <svg width="28" height="28" fill="#888" viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7zm7.43-2.9c.04-.31.07-.63.07-.96s-.03-.65-.07-.96l2.11-1.65a.5.5 0 0 0 .12-.64l-2-3.46a.5.5 0 0 0-.6-.22l-2.49 1a7.03 7.03 0 0 0-1.66-.96l-.38-2.65A.488.488 0 0 0 13 2h-4a.488.488 0 0 0-.5.42l-.38 2.65c-.6.25-1.17.57-1.66.96l-2.49-1a.5.5 0 0 0-.6.22l-2 3.46a.5.5 0 0 0 .12.64l2.11 1.65c-.04.31-.07.63-.07.96s.03.65.07.96l-2.11 1.65a.5.5 0 0 0-.12.64l2 3.46a.5.5 0 0 0 .6.22l2.49-1c.5.39 1.06.71 1.66.96l.38 2.65c.05.27.28.42.5.42h4c.22 0 .45-.15.5-.42l.38-2.65c.6-.25 1.17-.57 1.66-.96l2.49 1a.5.5 0 0 0 .6-.22l2-3.46a.5.5 0 0 0-.12-.64l-2.11-1.65zM12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg>
+        </button>
+        <h2>Pedidos Pendientes</h2>
+        <div id="pedidosList"></div>
+        <div id="configModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); z-index:999;">
+            <div style="background:#fff; max-width:600px; width:95vw; margin:60px auto; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.13); padding:38px 40px 32px 40px; position:relative;">
+                <button onclick="closeConfig()" style="position:absolute; top:10px; right:14px; background:none; border:none; font-size:1.7em; color:#888; cursor:pointer;">&times;</button>
+                <div style="margin-bottom:18px; text-align:center;">
+                    <button onclick="showConfigTab('actualizacion')" style="margin-right:8px; padding:8px 16px; border:none; border-radius:5px; background:#27ae60; color:white; font-weight:600;">Actualización</button>
+                    <button onclick="showConfigTab('usuarios')" style="padding:8px 16px; border:none; border-radius:5px; background:#bdecb6; color:#222; font-weight:600;">Usuarios</button>
+                </div>
+                <div id="tab-actualizacion">
+                    <h3>Actualizar mis datos</h3>
+                    <form id="adminDataForm" style="display:grid; grid-template-columns: 1fr 1fr; gap:18px 24px; align-items:center;">
+                        <label style="grid-column:1/2;">Usuario:</label>
+                        <input type="text" name="user" required style="grid-column:2/3;">
+                        <label style="grid-column:1/2;">Contraseña:</label>
+                        <input type="password" name="pass" required style="grid-column:2/3;">
+                        <label style="grid-column:1/2;">Nombre:</label>
+                        <input type="text" name="nombre" style="grid-column:2/3;">
+                        <label style="grid-column:1/2;">Número de teléfono:</label>
+                        <input type="tel" name="telefono" style="grid-column:2/3;">
+                        <label style="grid-column:1/2;">Correo electrónico:</label>
+                        <input type="email" name="correo" style="grid-column:2/3;">
+                        <div></div>
+                        <button type="submit" style="background:#bdecb6; color:white; padding:10px 28px; border:none; border-radius:5px; margin-top:10px; font-size:1.08em; grid-column:2/3; justify-self:start;">Actualizar datos</button>
+                    </form>
+                </div>
+                <div id="tab-usuarios" style="display:none;">
+                    <h3>Administrar usuarios</h3>
+                    <form id="newUserForm" style="margin-bottom:15px;">
+                        <input type="text" name="user" placeholder="Usuario" required style="width:48%; margin-right:2%;">
+                        <input type="password" name="pass" placeholder="Contraseña" required style="width:48%;">
+                        <input type="text" name="nombre" placeholder="Nombre" style="width:48%; margin-right:2%; margin-top:8px;">
+                        <input type="tel" name="telefono" placeholder="Teléfono" style="width:48%; margin-top:8px;">
+                        <input type="email" name="correo" placeholder="Correo" style="width:100%; margin-top:8px;">
+                        <button type="submit" style="background:#27ae60; color:white; padding:7px 15px; border:none; border-radius:5px; margin-top:10px; float:right;">Crear usuario</button>
+                        <div style="clear:both;"></div>
+                    </form>
+                    <div id="usuariosList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Proteger acceso
+        if(sessionStorage.getItem('adminLogged') !== '1') {
+            window.location.href = 'login.html';
+        }
+        // Mostrar pedidos
+        function renderPedidos() {
+            const pedidos = JSON.parse(localStorage.getItem('pedidos')||'[]');
+            const cont = document.getElementById('pedidosList');
+            if(pedidos.length === 0) {
+                cont.innerHTML = '<p style="text-align:center;color:#888;">No hay pedidos pendientes.</p>';
+                return;
+            }
+            cont.innerHTML = '';
+            pedidos.forEach((p,i) => {
+                cont.innerHTML += `<div class='pedido-card'>
+                    <p><b>Cliente:</b> ${p.nombre}</p>
+                    <p><b>Teléfono:</b> <a href='tel:${p.telefono}' style='color:#27ae60;'>${p.telefono}</a></p>
+                    <p><b>Dirección:</b> ${p.direccion}</p>
+                    <p><b>Productos:</b><br>${p.productos.replace(/%0A/g,'<br>')}</p>
+                    <p><b>Domicilio:</b> ${p.domicilio}</p>
+                    <p><b>Total:</b> $${p.total.toLocaleString('es-CO')}</p>
+                    <div class='pedido-actions'>
+                        <button class='btn-entregado' onclick='entregarPedido(${i})'>Entregado</button>
+                        <button class='btn-cancelar' onclick='cancelarPedido(${i})'>Cancelar</button>
+                    </div>
+                </div>`;
+            });
+        }
+        renderPedidos();
+        function entregarPedido(idx) {
+            let pedidos = JSON.parse(localStorage.getItem('pedidos')||'[]');
+            pedidos.splice(idx,1);
+            localStorage.setItem('pedidos',JSON.stringify(pedidos));
+            renderPedidos();
+        }
+        function cancelarPedido(idx) {
+            if(confirm('¿Seguro que deseas cancelar este pedido?')) {
+                let pedidos = JSON.parse(localStorage.getItem('pedidos')||'[]');
+                pedidos.splice(idx,1);
+                localStorage.setItem('pedidos',JSON.stringify(pedidos));
+                renderPedidos();
+            }
+        }
+        // Datos del admin
+        const adminForm = document.getElementById('adminDataForm');
+        function cargarDatosAdmin() {
+            const data = JSON.parse(localStorage.getItem('adminData'));
+            adminForm.user.value = data.user;
+            adminForm.pass.value = data.pass;
+            adminForm.nombre.value = data.nombre || '';
+            adminForm.telefono.value = data.telefono || '';
+            adminForm.correo.value = data.correo || '';
+        }
+        cargarDatosAdmin();
+        adminForm.onsubmit = function(e) {
+            e.preventDefault();
+            localStorage.setItem('adminData', JSON.stringify({
+                user: adminForm.user.value,
+                pass: adminForm.pass.value,
+                nombre: adminForm.nombre.value,
+                telefono: adminForm.telefono.value,
+                correo: adminForm.correo.value
+            }));
+            alert('Datos actualizados correctamente.');
+        };
+        function logout() {
+            sessionStorage.removeItem('adminLogged');
+            window.location.href = 'login.html';
+        }
+        // Configuración modal y pestañas SOLO para el usuario principal
+        const configBtn = document.getElementById('configBtn');
+        const configModal = document.getElementById('configModal');
+        const tabActualizacion = document.getElementById('tab-actualizacion');
+        const tabUsuarios = document.getElementById('tab-usuarios');
+        // Mostrar botón sólo si es el usuario principal
+        const admins = JSON.parse(localStorage.getItem('admins')||'[]');
+        const principalUser = admins.length ? admins[0].user : 'Admin';
+        const loggedUser = sessionStorage.getItem('adminUser') || '';
+        if (loggedUser === principalUser) {
+            configBtn.style.display = 'inline-block';
+        } else {
+            configBtn.style.display = 'none';
+            // Por seguridad, si intentan abrir el modal por código, lo cerramos
+            if(configModal) configModal.style.display = 'none';
+        }
+        configBtn.onclick = function() { configModal.style.display = 'block'; showConfigTab('actualizacion'); };
+        function closeConfig() { configModal.style.display = 'none'; }
+        function showConfigTab(tab) {
+            tabActualizacion.style.display = (tab === 'actualizacion') ? 'block' : 'none';
+            tabUsuarios.style.display = (tab === 'usuarios') ? 'block' : 'none';
+        }
+        window.onclick = function(event) {
+            if (event.target === configModal) configModal.style.display = 'none';
+        };
+
+        // Gestión de usuarios administradores
+        function getAdmins() {
+            return JSON.parse(localStorage.getItem('admins')||'[{"user":"Admin","pass":"Admin","nombre":"Propietario","telefono":"","correo":""}]');
+        }
+        function setAdmins(arr) { localStorage.setItem('admins', JSON.stringify(arr)); }
+        // Mostrar usuarios
+        function renderUsuarios() {
+            const usuariosList = document.getElementById('usuariosList');
+            const admins = getAdmins();
+            usuariosList.innerHTML = admins.map((a,i) =>
+                `<div style='padding:8px 0; border-bottom:1px solid #eee;'>
+                    <b>${a.user}</b> (${a.nombre || 'Sin nombre'})<br>
+                    <span style='font-size:0.95em;'>Tel: ${a.telefono||'-'} | Correo: ${a.correo||'-'}</span>
+                    ${i>0 ? `<button onclick='deleteUser(${i})' style='margin-left:10px; background:#e74c3c; color:white; border:none; border-radius:4px; padding:3px 12px; font-size:0.95em;'>Eliminar</button>` : '<span style="color:#888; margin-left:10px; font-size:0.95em;">(Principal)</span>'}
+                </div>`
+            ).join('');
+        }
+        window.deleteUser = function(idx) {
+            if(confirm('¿Eliminar este usuario?')) {
+                let admins = getAdmins();
+                admins.splice(idx,1);
+                setAdmins(admins);
+                renderUsuarios();
+            }
+        };
+        document.getElementById('newUserForm').onsubmit = function(e) {
+            e.preventDefault();
+            let admins = getAdmins();
+            const f = e.target;
+            admins.push({
+                user: f.user.value,
+                pass: f.pass.value,
+                nombre: f.nombre.value,
+                telefono: f.telefono.value,
+                correo: f.correo.value
+            });
+            setAdmins(admins);
+            f.reset();
+            renderUsuarios();
+            alert('Usuario creado.');
+        };
+        renderUsuarios();
+        // Actualización de datos del usuario actual (primero)
+        function cargarDatosAdmin() {
+            const admins = getAdmins();
+            const adminForm = document.getElementById('adminDataForm');
+            adminForm.user.value = admins[0].user;
+            adminForm.pass.value = admins[0].pass;
+            adminForm.nombre.value = admins[0].nombre || '';
+            adminForm.telefono.value = admins[0].telefono || '';
+            adminForm.correo.value = admins[0].correo || '';
+        }
+        cargarDatosAdmin();
+        document.getElementById('adminDataForm').onsubmit = function(e) {
+            e.preventDefault();
+            let admins = getAdmins();
+            const f = e.target;
+            admins[0] = {
+                user: f.user.value,
+                pass: f.pass.value,
+                nombre: f.nombre.value,
+                telefono: f.telefono.value,
+                correo: f.correo.value
+            };
+            setAdmins(admins);
+            alert('Datos actualizados correctamente.');
+        };
+        // Adaptar login.html para multiusuario (no aquí, pero avisar)
+    </script>
+</body>
+</html>
